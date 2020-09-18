@@ -33,7 +33,19 @@ public class CoronaVirusDataService {
 
         //now get a response by sending the client this request and returns as a string
         HttpResponse<String>httpResponse=client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(httpResponse.body());
+        //System.out.println(httpResponse.body());
+
+        //to show the csv file data. to manage the printed string of data from the url we use csv library
+        /*Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse the
+        header names from the first record. This will use the values from the first record as header names and skip the
+        first record when iterating.
+        */
+        StringReader csvBodyReader=new StringReader(httpResponse.body());
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
+        for (CSVRecord record : records) {
+            String state = record.get("Province/State");
+            System.out.println(state);}
+
 
     }
 }
