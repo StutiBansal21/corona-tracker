@@ -20,16 +20,18 @@ data here. This class is going to give us the data and when the application load
 fetches the data.
  */
 
-@Service
+@Service//used with classes that provide some business functionalities.
 public class CoronaVirusDataService {
 
-    private static String VIRUS_DATA_URL="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    //this is the url from where the data is being fetched. this url is a .csv file which holds all the confirmed cases
+    // upto the current data of all different locations
+    private static String URL="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
     // this function is going to make the http call to the url to get/fetch the data
-    @PostConstruct
+    @PostConstruct// used on a method that needs to be executed after dependency injection is done to perform any initialization.
     public void fetchVirusData() throws IOException, InterruptedException {
-        HttpClient client=HttpClient.newHttpClient();
-        HttpRequest request=HttpRequest.newBuilder().uri(URI.create(VIRUS_DATA_URL)).build();
+        HttpClient client=HttpClient.newHttpClient();//to make http calls we make its client
+        HttpRequest request=HttpRequest.newBuilder().uri(URI.create(URL)).build();//saying where we do we need to do the httpRequest
 
         //now get a response by sending the client this request and returns as a string
         HttpResponse<String>httpResponse=client.send(request, HttpResponse.BodyHandlers.ofString());
