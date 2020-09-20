@@ -2,6 +2,7 @@ package com.labproject.covidtracker.services;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +30,7 @@ public class CoronaVirusDataService {
 
     // this function is going to make the http call to the url to get/fetch the data
     @PostConstruct// used on a method that needs to be executed after dependency injection is done to perform any initialization.
+    @Scheduled(cron="* * * * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data
     public void fetchVirusData() throws IOException, InterruptedException {
         HttpClient client=HttpClient.newHttpClient();//to make http calls we make its client
         HttpRequest request=HttpRequest.newBuilder().uri(URI.create(URL)).build();//saying where we do we need to do the httpRequest
@@ -37,16 +39,20 @@ public class CoronaVirusDataService {
         HttpResponse<String>httpResponse=client.send(request, HttpResponse.BodyHandlers.ofString());
         //System.out.println(httpResponse.body());
 
-        //to show the csv file data. to manage the printed string of data from the url we use csv library
+        //to show the csv file data. to manage the printed string of data from the url we use csv library.To convert the
+        // string to objects so that we can access each column as we want
         /*Some CSV files define header names in their first record. If configured, Apache Commons CSV can parse the
         header names from the first record. This will use the values from the first record as header names and skip the
         first record when iterating.
         */
-        StringReader csvBodyReader=new StringReader(httpResponse.body());
+        StringReader csvBodyReader=new StringReader(httpResponse.body());//instance of reader that passes a string
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
+        //looping throught the records which were the objects/columns returned when http request fetches the data
         for (CSVRecord record : records) {
             String state = record.get("Province/State");
-            System.out.println(state);}
+            System.out.println(state);//prints the column we want : here prints all the province/state rom the url
+
+        }
 
 
     }
