@@ -1,19 +1,21 @@
 package com.labproject.covidtracker.services;
 
+import com.labproject.covidtracker.models.LocationInfo;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.FileReader;
+import java.awt.*;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 when the application runs we want some code to execute and call the url(having the covid confirmed cases) and get the
@@ -28,10 +30,16 @@ public class CoronaVirusDataService {
     // upto the current data of all different locations
     private static String URL="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
+    private List<LocationInfo> allLocation=new ArrayList<>();//creating an arraylist of the locationInfo class so that after creating instance of this we can add info to it everytime we get request
+
     // this function is going to make the http call to the url to get/fetch the data
     @PostConstruct// used on a method that needs to be executed after dependency injection is done to perform any initialization.
-    @Scheduled(cron="* * * * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data
+    @Scheduled(cron="* * 1 * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data
     public void fetchVirusData() throws IOException, InterruptedException {
+
+        //new list:
+        List<LocationInfo> newLocation=new ArrayList<>();
+
         HttpClient client=HttpClient.newHttpClient();//to make http calls we make its client
         HttpRequest request=HttpRequest.newBuilder().uri(URI.create(URL)).build();//saying where we do we need to do the httpRequest
 
@@ -47,13 +55,19 @@ public class CoronaVirusDataService {
         */
         StringReader csvBodyReader=new StringReader(httpResponse.body());//instance of reader that passes a string
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
-        //looping throught the records which were the objects/columns returned when http request fetches the data
+        //looping throught the records which were the objects/columns returned when http request fetches the data.
+        // we want to save the data in a model class so that we can use it easier
         for (CSVRecord record : records) {
-            String state = record.get("Province/State");
-            System.out.println(state);//prints the column we want : here prints all the province/state rom the url
-
+            LocationInfo locationInfo=new LocationInfo();
+            locationInfo.setState(record.get("Province/State"));
+            locationInfo.setCountry(record.get("Country/Region"));
+            locationInfo.setLatestCases(Integer.parseInt(record.get(record.size()-1)));//gives the last updated column
+            System.out.println(locationInfo);
+            newLocation.add(locationInfo);
+            //String state = record.get("Province/State");
+            //System.out.println(state);//prints the column we want : here prints all the province/state rom the url
         }
-
+        this.allLocation=newLocation;
 
     }
 }
