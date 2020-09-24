@@ -32,6 +32,11 @@ public class CoronaVirusDataService {
 
     private List<LocationInfo> allLocation=new ArrayList<>();//creating an arraylist of the locationInfo class so that after creating instance of this we can add info to it every time we get request
 
+    //getter method
+    public List<LocationInfo> getAllLocation() {
+        return allLocation;
+    }
+
     // this function is going to make the http call to the url to get/fetch the data
     @PostConstruct// used on a method that needs to be executed after dependency injection is done to perform any initialization.
     @Scheduled(cron="* * 1 * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data.

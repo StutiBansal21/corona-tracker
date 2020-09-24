@@ -1,14 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>CoronaVirus Tracker Application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+<!--TH:EACH is a loop variable name is the actual variable we r looping over is LocationStats-->
 
 <body>
 
 <p data-th-text="${testName}"></p>
+
+<table>
+    <tr>
+        <th>STATE</th>
+        <th>COUNTRY</th>
+        <th>TOTAL CASES REPORTED</th>
+    </tr>
+    <tr th:each="LocationStat : ${LocationStats}">
+        <td th:text="${LocationStat.state}"></td>
+        <td th:text="${LocationStat.country}"></td>
+        <td th:text="${LocationStat.latestCases}">0</td>
+    </tr>
+</table>
 
 </body>
 
