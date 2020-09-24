@@ -30,14 +30,15 @@ public class CoronaVirusDataService {
     // upto the current data of all different locations
     private static String URL="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
-    private List<LocationInfo> allLocation=new ArrayList<>();//creating an arraylist of the locationInfo class so that after creating instance of this we can add info to it everytime we get request
+    private List<LocationInfo> allLocation=new ArrayList<>();//creating an arraylist of the locationInfo class so that after creating instance of this we can add info to it every time we get request
 
     // this function is going to make the http call to the url to get/fetch the data
     @PostConstruct// used on a method that needs to be executed after dependency injection is done to perform any initialization.
-    @Scheduled(cron="* * 1 * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data
+    @Scheduled(cron="* * 1 * * *")//used when we want to schedule this method time period so that this project runs after a period of time and fetches the updated data.
+    //method should have a void return type and should not have any parameters.
     public void fetchVirusData() throws IOException, InterruptedException {
 
-        //new list:
+        //new list so that while we are calling/using the old list and other person manipulates the list there is no concurrency problem created.
         List<LocationInfo> newLocation=new ArrayList<>();
 
         HttpClient client=HttpClient.newHttpClient();//to make http calls we make its client
