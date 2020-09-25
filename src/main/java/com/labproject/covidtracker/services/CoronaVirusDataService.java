@@ -68,7 +68,7 @@ public class CoronaVirusDataService {
             locationInfo.setState(record.get("Province/State"));
             locationInfo.setCountry(record.get("Country/Region"));
             locationInfo.setLatestCases(Integer.parseInt(record.get(record.size()-1)));//gives the last updated column
-            System.out.println(locationInfo);
+            //System.out.println(locationInfo);
             newLocation.add(locationInfo);
             //String state = record.get("Province/State");
             //System.out.println(state);//prints the column we want : here prints all the province/state rom the url

@@ -4,12 +4,19 @@
 <head>
     <title>CoronaVirus Tracker Application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <!--TH:EACH is a loop variable name is the actual variable we r looping over is LocationStats-->
 
 <body>
+<h1>CoronaVirus Tracker Application</h1>
+<p>This application lists the current number of cases reported across the globe</p>
 
-<p data-th-text="${testName}"></p>
+<div class="jumbotron">
+    <h1 class="display-4" th:text="${TotalCases}"></h1>
+    <p class="lead">Total Cases reported as of today: </p>
+
+</div>
 
 <table>
     <tr>
