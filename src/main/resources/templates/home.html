@@ -17,20 +17,23 @@
     <p class="lead">Total Cases reported as of today: </p>
 
 </div>
-
-<table>
-    <tr>
-        <th>STATE</th>
-        <th>COUNTRY</th>
-        <th>TOTAL CASES REPORTED</th>
-    </tr>
-    <tr th:each="LocationStat : ${LocationStats}">
-        <td th:text="${LocationStat.state}"></td>
-        <td th:text="${LocationStat.country}"></td>
-        <td th:text="${LocationStat.latestCases}">0</td>
-    </tr>
-</table>
-
+<!--Wanting to put the table inside the container to make the code look nicer   -->
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>STATE</th>
+            <th>COUNTRY</th>
+            <th>TOTAL CASES REPORTED</th>
+            <th>CHANGE SINCE LAST DAY</th>
+        </tr>
+        <tr th:each="LocationStat : ${LocationStats}">
+            <td th:text="${LocationStat.state}"></td>
+            <td th:text="${LocationStat.country}"></td>
+            <td th:text="${LocationStat.latestCases}">0</td>
+            <td th:text="${LocationStat.diffFromPreviousDay}">0</td>
+        </tr>
+    </table>
+</div>
 </body>
 
 </html>

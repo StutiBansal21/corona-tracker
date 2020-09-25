@@ -8,6 +8,15 @@ public class LocationInfo {
     private String state;
     private String country;
     private int latestCases;
+    private int diffFromPreviousDay;
+
+    public int getDiffFromPreviousDay() {
+        return diffFromPreviousDay;
+    }
+
+    public void setDiffFromPreviousDay(int diffFromPreviousDay) {
+        this.diffFromPreviousDay = diffFromPreviousDay;
+    }
 
     public String getState() {
         return state;
