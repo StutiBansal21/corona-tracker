@@ -29,8 +29,10 @@ public class HomeController {
     {
         List<LocationInfo> allLocation = coronaVirusDataService.getAllLocation();//list of obj
         int TotalCases=allLocation.stream().mapToInt(LocationInfo::getLatestCases).sum();//converting the list into a stream and mapping the integer and sum the values
+        int TotalNewCases=allLocation.stream().mapToInt(LocationInfo::getDiffFromPreviousDay).sum();
         model.addAttribute("LocationStats",allLocation);//giving the value TESt to testname. which we can access using thymeleaf
         model.addAttribute("TotalCases",TotalCases);
+        model.addAttribute("TotalNewCases",TotalNewCases);
         return "home";
     }
 }
